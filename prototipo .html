@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fometto 2.0 - Sistema Profissional de Vendas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 10px;
+        }
+        
+        .header {
+            background: #1A237E;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .header h1, .header p {
+            color: white;
+            margin: 0;
+        }
+        
+        .header h1 {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 2.2rem;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+        }
+        
+        .settings-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: #1A237E;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .settings-btn:hover {
+            background: #f8f9fa;
+            transform: rotate(90deg);
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .menu-btn {
+            border-radius: 15px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white !important;
+            border: none;
+        }
+        
+        .menu-btn i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: white !important;
+        }
+        
+        .menu-btn span {
+            font-weight: 600;
+            font-size: 1rem;
+            color: white !important;
+        }
+        
+        .btn-primary { background: #1A237E; }
+        .btn-success { background: #2E7D32; }
+        .btn-warning { background: #EF6C00; }
+        .btn-info { background: #0288D1; }
+        .btn-secondary { background: #5D4037; }
+        .btn-danger { background: #C62828; }
+        .btn-indigo { background: #4A148C; }
+        .btn-teal { background: #00695C; }
+        .btn-brown { background: #4E342E; }
+        
+        .btn-primary, .btn-success, .btn-warning, .btn-info, 
+        .btn-secondary, .btn-danger, .btn-indigo, .btn-teal, .btn-brown {
+            color: white !important;
+        }
+        
+        .btn-primary i, .btn-success i, .btn-warning i, .btn-info i, 
+        .btn-secondary i, .btn-danger i, .btn-indigo i, .btn-teal i, .btn-brown i {
+            color: white !important;
+        }
+        
+        .menu-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-5px);
+        }
+        
+        .screen {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .back-btn {
+            background: #5D4037;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #6D4C41;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #1A237E;
+            box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+        }
+        
+        .btn {
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .table th {
+            background: #1A237E;
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+        
+        .table td {
+            padding: 12px 15px;
+            border-color: #e9ecef;
+        }
+        
+        .foto-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #e9ecef;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            background: #1A237E;
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border-bottom: none;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .nav-tabs {
+            border-bottom: 2px solid #1A237E;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #7f8c8d;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: #1A237E;
+            color: white;
+        }
+        
+        .config-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .delete-btn-small {
+            background: #C62828;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        
+        .action-btn {
+            margin: 2px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        
+        .edit-btn { background: #EF6C00; color: white; }
+        .delete-btn { background: #C62828; color: white; }
+        .view-btn { background: #0288D1; color: white; }
+        .pdf-btn { background: #5D4037; color: white; }
+        
+        #catalogoProdutos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .catalogo-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .catalogo-foto {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e9ecef;
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+        }
+        
+        .catalogo-nome {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .catalogo-preco {
+            color: #2E7D32;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .catalogo-unidade {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .calculadora-display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .calculadora-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .calculadora-btn {
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .calculadora-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .calculadora-btn-number { background: #e9ecef; }
+        .calculadora-btn-operator { background: #1A237E; color: white; }
+        .calculadora-btn-equals { background: #2E7D32; color: white; }
+        .calculadora-btn-clear { background: #C62828; color: white; }
+        .calculadora-btn-percent { background: #EF6C00; color: white; }
+        
+        .calendar-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #1A237E;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background: #e9ecef;
+        }
+        
+        .calendar-day.today {
+            background: #1A237E;
+            color: white;
+        }
+        
+        .calendar-day.holiday {
+            background: #C62828;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .calendar-day.holiday:hover {
+            background: #D32F2F;
+        }
+        
+        .notes-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+        }
+        
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #1A237E;
+        }
+        
+        .config-content {
+            display: none;
+        }
+        
+        .config-content.active {
+            display: block;
+        }
+
+        .foto-preview-single {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #e9ecef;
+            margin-top: 10px;
+        }
+
+        .foto-label-text {
+            font-size: 0.9rem;
+            color: #555;
+            margin-left: 8px;
+            user-select: none;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 5px; }
+            .header h1 { font-size: 1.8rem; }
+            .header p { font-size: 1rem; }
+            .menu-btn { min-height: 100px; padding: 20px 10px; }
+            .menu-btn i { font-size: 2rem; }
+            .menu-btn span { font-size: 0.9rem; }
+            .table-responsive { font-size: 14px; }
+            #catalogoProdutos { grid-template-columns: 1fr; }
+            .calculadora-buttons { grid-template-columns: repeat(4, 1fr); }
+            .calculadora-btn { padding: 12px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header position-relative">
+            <h1>Fometto 2.0</h1>
+            <p>Sistema Profissional de Vendas</p>
+            <button class="settings-btn" onclick="showSettings()">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+
+        <!-- Menu Principal -->
+        <div id="mainMenu" class="menu-grid">
+            <button class="menu-btn btn-primary" onclick="showScreen('clientesScreen')">
+                <i class="fas fa-users"></i>
+                <span>Clientes</span>
+            </button>
+            <button class="menu-btn btn-success" onclick="showScreen('produtosScreen')">
+                <i class="fas fa-box"></i>
+                <span>Produtos</span>
+            </button>
+            <button class="menu-btn btn-warning" onclick="showScreen('pedidosScreen')">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Pedidos</span>
+            </button>
+            <button class="menu-btn btn-info" onclick="showScreen('ferramentasScreen')">
+                <i class="fas fa-tools"></i>
+                <span>Ferramentas</span>
+            </button>
+            <button class="menu-btn btn-danger" onclick="showScreen('vendasScreen')">
+                <i class="fas fa-chart-line"></i>
+                <span>Vendas</span>
+            </button>
+            <button class="menu-btn btn-indigo" onclick="showScreen('catalogoScreen')">
+                <i class="fas fa-book"></i>
+                <span>Catálogo</span>
+            </button>
+        </div>
+
+        <!-- Tela de Clientes -->
+        <div id="clientesScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Gerenciar Clientes</h2>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <button class="btn btn-primary w-100" onclick="showClienteForm()">
+                        <i class="fas fa-plus"></i> Novo Cliente
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="searchCliente" placeholder="Buscar cliente..." onkeyup="filtrarClientes()">
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Razão Social</th>
+                            <th>Nome Fantasia</th>
+                            <th>Telefone</th>
+                            <th>Cidade</th>
+                            <th>IE</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tela de Produtos -->
+        <div id="produtosScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Gerenciar Produtos</h2>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <button class="btn btn-success w-100" onclick="showProdutoForm()">
+                        <i class="fas fa-plus"></i> Novo Produto
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="searchProduto" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nome</th>
+                            <th>Unidade</th>
+                            <th>Preço/Kg</th>
+                            <th>Qtd/Unidade</th>
+                            <th>Preço Total</th>
+                            <th>Comissão (%)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="produtosTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tela de Pedidos -->
+        <div id="pedidosScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Gerenciar Pedidos</h2>
+            
+            <ul class="nav nav-tabs" id="pedidosTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" onclick="showTab('novoPedido')">Novo Pedido</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('pedidosRealizados')">Pedidos Realizados</a>
+                </li>
+            </ul>
+            
+            <!-- Novo Pedido -->
+            <div id="novoPedido" class="tab-content active">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Cliente:</label>
+                        <select class="form-select" id="pedidoCliente">
+                            <option value="">Selecione um cliente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Data de Entrega:</label>
+                        <input type="date" class="form-control" id="pedidoDataEntrega">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Produto:</label>
+                        <select class="form-select" id="pedidoProduto">
+                            <option value="">Selecione um produto</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Quantidade (Kg):</label>
+                        <input type="number" class="form-control" id="pedidoQuantidade" step="0.1" oninput="calcularTotalItem()">
+                    </div>
+                    <div class="col-md-4">
+                        <label>Total do Item:</label>
+                        <input type="text" class="form-control" id="pedidoTotalItem" readonly>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary mt-2" onclick="adicionarItemPedido()">
+                    <i class="fas fa-plus"></i> Adicionar Item
+                </button>
+                
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço Unit.</th>
+                                <th>Total</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itensPedido">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label>Forma de Pagamento:</label>
+                        <select class="form-select" id="pedidoFormaPagamento">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Prazo de Pagamento:</label>
+                        <select class="form-select" id="pedidoPrazoPagamento">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h4>Total do Pedido: R$ <span id="totalPedido">0,00</span></h4>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-success w-100" onclick="finalizarPedido()">
+                            <i class="fas fa-check"></i> Finalizar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pedidos Realizados -->
+            <div id="pedidosRealizados" class="tab-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidosRealizadosTable">
+                        </tbody>
+                    </table>
+                    <div id="nenhumPedido" class="text-center mt-3" style="display: none;">
+                        <p>Nenhum pedido realizado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Ferramentas -->
+        <div id="ferramentasScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Ferramentas</h2>
+            
+            <div class="menu-grid">
+                <button class="menu-btn btn-info" onclick="showCalendario()">
+                    <i class="fas fa-calendar"></i>
+                    <span>Calendário</span>
+                </button>
+                <button class="menu-btn btn-warning" onclick="showCalculadora()">
+                    <i class="fas fa-calculator"></i>
+                    <span>Calculadora</span>
+                </button>
+                <button class="menu-btn btn-success" onclick="showBlocoNotas()">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Bloco de Notas</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tela de Vendas -->
+        <div id="vendasScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Relatório de Vendas</h2>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de Vendas</h5>
+                            <h2 class="text-primary" id="totalVendas">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Comissão Total</h5>
+                            <h2 class="text-success" id="totalComissoes">R$ 0,00</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Pedidos Vendidos</h5>
+                            <h2 class="text-warning" id="totalPedidosVendidos">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive mt-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Valor</th>
+                            <th>Comissão</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vendasTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tela de Catálogo -->
+        <div id="catalogoScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Catálogo de Produtos</h2>
+            
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <button class="btn btn-primary w-100" onclick="gerarPDFCatalogo()">
+                        <i class="fas fa-file-pdf"></i> Gerar PDF
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-success w-100" onclick="compartilharCatalogoWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-info w-100" onclick="compartilharCatalogoEmail()">
+                        <i class="fas fa-envelope"></i> E-mail
+                    </button>
+                </div>
+            </div>
+            
+            <div id="catalogoProdutos">
+            </div>
+        </div>
+
+        <!-- Tela de Configurações -->
+        <div id="settingsScreen" class="screen">
+            <button class="back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Configurações</h2>
+            
+            <ul class="nav nav-tabs" id="configTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" onclick="showConfigTab('unidades')">Unidades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showConfigTab('pagamento')">Pagamento</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showConfigTab('prazos')">Prazos</a>
+                </li>
+            </ul>
+            
+            <!-- Unidades -->
+            <div id="unidades" class="config-content active">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="novaUnidade" placeholder="Nova unidade de medida">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" onclick="adicionarUnidade()">Adicionar</button>
+                    </div>
+                </div>
+                <div id="listaUnidades"></div>
+            </div>
+            
+            <!-- Formas de Pagamento -->
+            <div id="pagamento" class="config-content">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="novaFormaPagamento" placeholder="Nova forma de pagamento">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" onclick="adicionarFormaPagamento()">Adicionar</button>
+                    </div>
+                </div>
+                <div id="listaFormasPagamento"></div>
+            </div>
+            
+            <!-- Prazos de Pagamento -->
+            <div id="prazos" class="config-content">
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="novoPrazoPagamento" placeholder="Novo prazo de pagamento">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" onclick="adicionarPrazoPagamento()">Adicionar</button>
+                    </div>
+                </div>
+                <div id="listaPrazosPagamento"></div>
+            </div>
+        </div>
+
+        <!-- Tela de Calendário -->
+        <div id="calendarioScreen" class="screen">
+            <button class="back-btn" onclick="showScreen('ferramentasScreen')">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Calendário</h2>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="btn btn-primary" onclick="mudarMes(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 id="calendarTitle">Mês Ano</h3>
+                    <button class="btn btn-primary" onclick="mudarMes(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Dias da semana -->
+                    <div class="calendar-day-header">Dom</div>
+                    <div class="calendar-day-header">Seg</div>
+                    <div class="calendar-day-header">Ter</div>
+                    <div class="calendar-day-header">Qua</div>
+                    <div class="calendar-day-header">Qui</div>
+                    <div class="calendar-day-header">Sex</div>
+                    <div class="calendar-day-header">Sáb</div>
+                    <!-- Dias do mês serão preenchidos dinamicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Calculadora -->
+        <div id="calculadoraScreen" class="screen">
+            <button class="back-btn" onclick="showScreen('ferramentasScreen')">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Calculadora</h2>
+            <div class="calculadora-display" id="calculadoraDisplay">0</div>
+            <div class="calculadora-buttons">
+                <button class="calculadora-btn calculadora-btn-clear" onclick="limparCalculadora()">C</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora('(')">(</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora(')')">)</button>
+                <button class="calculadora-btn calculadora-btn-percent" onclick="calcularPorcentagem()">%</button>
+                
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('7')">7</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('8')">8</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('9')">9</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora('/')">/</button>
+                
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('4')">4</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('5')">5</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('6')">6</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora('*')">×</button>
+                
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('1')">1</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('2')">2</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('3')">3</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora('-')">-</button>
+                
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('0')">0</button>
+                <button class="calculadora-btn calculadora-btn-number" onclick="adicionarCalculadora('.')">.</button>
+                <button class="calculadora-btn calculadora-btn-equals" onclick="calcularResultado()">=</button>
+                <button class="calculadora-btn calculadora-btn-operator" onclick="adicionarCalculadora('+')">+</button>
+            </div>
+        </div>
+
+        <!-- Tela de Bloco de Notas -->
+        <div id="blocoNotasScreen" class="screen">
+            <button class="back-btn" onclick="showScreen('ferramentasScreen')">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h2>Bloco de Notas</h2>
+            <div class="notes-container">
+                <textarea class="notes-textarea" id="notesTextarea" placeholder="Digite suas anotações aqui..."></textarea>
+                <div class="mt-3">
+                    <button class="btn btn-primary" onclick="salvarNotas()">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button class="btn btn-secondary" onclick="limparNotas()">
+                        <i class="fas fa-trash"></i> Limpar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal Cliente -->
+    <div class="modal fade" id="clienteModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="clienteForm">
+                        <input type="hidden" id="clienteId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Razão Social:</label>
+                                <input type="text" class="form-control" id="clienteRazaoSocial" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Nome Fantasia:</label>
+                                <input type="text" class="form-control" id="clienteNomeFantasia">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Telefone:</label>
+                                <input type="tel" class="form-control" id="clienteTelefone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label>CPF/CNPJ:</label>
+                                <input type="text" class="form-control" id="clienteCpfCnpj">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Inscrição Estadual / Isento:</label>
+                                <input type="text" class="form-control" id="clienteInscricaoEstadual" placeholder="Número ou 'Isento'">
+                            </div>
+                            <div class="col-md-6">
+                                <label>CEP:</label>
+                                <input type="text" class="form-control" id="clienteCep" onblur="buscarCEP()">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Endereço:</label>
+                                <input type="text" class="form-control" id="clienteEndereco">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Bairro:</label>
+                                <input type="text" class="form-control" id="clienteBairro">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Cidade:</label>
+                                <input type="text" class="form-control" id="clienteCidade">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Estado:</label>
+                                <input type="text" class="form-control" id="clienteEstado">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Ponto de Referência:</label>
+                                <input type="text" class="form-control" id="clienteReferencia">
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-md-9">
+                                <label>Foto:</label>
+                                <input type="file" class="form-control" id="clienteFoto" accept="image/*">
+                            </div>
+                            <div class="col-md-3 foto-label-text">
+                                Dimensão padrão: 15 x 20 cm
+                            </div>
+                        </div>
+                        <img id="fotoPreview" class="foto-preview-single mt-2" style="display:none;">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarCliente()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Produto -->
+    <div class="modal fade" id="produtoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="produtoForm">
+                        <input type="hidden" id="produtoId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Nome do Produto:</label>
+                                <input type="text" class="form-control" id="produtoNome" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Unidade de Venda:</label>
+                                <select class="form-select" id="produtoUnidade" required>
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Preço por Kg (R$):</label>
+                                <input type="number" class="form-control" id="produtoPrecoKg" step="0.01" required onchange="calcularPrecoTotal()">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Quantidade de Kg por Unidade:</label>
+                                <input type="number" class="form-control" id="produtoQuantidadeKg" step="0.1" required onchange="calcularPrecoTotal()">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Preço Total (R$):</label>
+                                <input type="text" class="form-control" id="produtoPrecoTotal" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Comissão (%):</label>
+                                <input type="number" class="form-control" id="produtoComissao" step="0.1" min="0" max="100" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Estoque (opcional):</label>
+                                <input type="number" class="form-control" id="produtoEstoque" step="0.1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Descrição:</label>
+                                <textarea class="form-control" id="produtoDescricao" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-md-9">
+                                <label>Foto:</label>
+                                <input type="file" class="form-control" id="produtoFoto" accept="image/*">
+                            </div>
+                            <div class="col-md-3 foto-label-text">
+                                Dimensão padrão: 15 x 20 cm
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="salvarProduto()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Variáveis globais
+        let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+        let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+        let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+        let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+        let unidades = JSON.parse(localStorage.getItem('unidades')) || ['Kg', 'Unidade', 'Caixa', 'Bandeja'];
+        let formasPagamento = JSON.parse(localStorage.getItem('formasPagamento')) || ['Dinheiro', 'PIX', 'Cartão', 'Transferência'];
+        let prazosPagamento = JSON.parse(localStorage.getItem('prazosPagamento')) || ['À vista', '7 dias', '15 dias', '30 dias'];
+        let itensPedidoAtual = [];
+        const COMISSAO_PADRAO = 2; // 2% de comissão padrão
+        let calendarioMes = new Date().getMonth();
+        let calendarioAno = new Date().getFullYear();
+
+        // Feriados nacionais até 2030
+        const feriados = {
+            2024: [
+                '01-01', '02-12', '02-13', '03-29', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2025: [
+                '01-01', '03-03', '03-04', '04-18', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2026: [
+                '01-01', '02-16', '02-17', '04-03', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2027: [
+                '01-01', '02-08', '02-09', '03-26', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2028: [
+                '01-01', '02-28', '02-29', '04-14', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2029: [
+                '01-01', '02-12', '02-13', '03-30', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ],
+            2030: [
+                '01-01', '03-04', '03-05', '04-19', '04-21', '05-01', '09-07', '10-12', '11-02', '11-15', '12-25'
+            ]
+        };
+
+        // Emojis de frutos do mar
+        const emojisMarinhos = {
+            'camarão': '🦐',
+            'camarao': '🦐',
+            'lula': '🦑',
+            'polvo': '🐙',
+            'peixe': '🐟',
+            'salmão': '🐟',
+            'salmao': '🐟',
+            'atum': '🐟',
+            'sardinha': '🐟',
+            'bacalhau': '🐟',
+            'tilápia': '🐟',
+            'tilapia': '🐟',
+            'robalo': '🐟',
+            'dourado': '🐟',
+            'caranguejo': '🦀',
+            'lagosta': '🦞',
+            'ostra': '🦪',
+            'mexilhão': '🦪',
+            'mexilhao': '🦪'
+        };
+
+        // Calculadora
+        let expressaoCalculadora = '';
+        let ultimoResultado = 0;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarDados();
+            atualizarRelatorios();
+            atualizarVendas();
+            carregarNotas();
+            
+            // Adicionar listener para preview de foto
+            document.getElementById('clienteFoto').addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const preview = document.getElementById('fotoPreview');
+                        preview.src = event.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        });
+
+        // Navegação
+        function showMainMenu() {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+            document.getElementById('mainMenu').style.display = 'grid';
+        }
+
+        function showScreen(screenId) {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if (screenId === 'catalogoScreen') {
+                carregarCatalogo();
+            } else if (screenId === 'vendasScreen') {
+                atualizarVendas();
+            } else if (screenId === 'calendarioScreen') {
+                renderizarCalendario();
+            } else if (screenId === 'pedidosScreen') {
+                // Resetar para a aba Novo Pedido ao abrir a tela
+                showTab('novoPedido');
+            }
+        }
+
+        function showSettings() {
+            showScreen('settingsScreen');
+            carregarConfiguracoes();
+        }
+
+        // Tabs
+        function showTab(tabName) {
+            // Remover classe active de todas as abas de conteúdo
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.display = 'none';
+            });
+            
+            // Adicionar classe active à aba selecionada
+            const tabElement = document.getElementById(tabName);
+            if (tabElement) {
+                tabElement.classList.add('active');
+                tabElement.style.display = 'block';
+            }
+            
+            // Remover classe active de todos os links de navegação
+            document.querySelectorAll('#pedidosTabs .nav-link').forEach(link => link.classList.remove('active'));
+            
+            // Encontrar e ativar o link correspondente
+            const links = document.querySelectorAll('#pedidosTabs .nav-link');
+            for (let link of links) {
+                if (link.textContent.trim() === (tabName === 'novoPedido' ? 'Novo Pedido' : 'Pedidos Realizados')) {
+                    link.classList.add('active');
+                    break;
+                }
+            }
+            
+            // Carregar pedidos do mês atual se for a aba de pedidos realizados
+            if (tabName === 'pedidosRealizados') {
+                carregarPedidosRealizadosMesAtual();
+            }
+        }
+
+        function showConfigTab(tabName) {
+            // Remover classe active de todas as abas de conteúdo
+            document.querySelectorAll('.config-content').forEach(tab => tab.classList.remove('active'));
+            // Adicionar classe active à aba selecionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Remover classe active de todos os links de navegação
+            document.querySelectorAll('#configTabs .nav-link').forEach(link => link.classList.remove('active'));
+            // Adicionar classe active ao link clicado
+            event.target.classList.add('active');
+        }
+
+        // Função para obter emoji baseado no nome do produto
+        function obterEmojiProduto(nome) {
+            const nomeMinusculo = nome.toLowerCase();
+            for (const [palavra, emoji] of Object.entries(emojisMarinhos)) {
+                if (nomeMinusculo.includes(palavra)) {
+                    return emoji;
+                }
+            }
+            return '📦'; // Emoji padrão
+        }
+
+        // Clientes
+        function showClienteForm(id = null) {
+            const modal = new bootstrap.Modal(document.getElementById('clienteModal'));
+            
+            if (id) {
+                const cliente = clientes.find(c => c.id === id);
+                if (cliente) {
+                    document.getElementById('clienteId').value = cliente.id;
+                    document.getElementById('clienteRazaoSocial').value = cliente.razaoSocial || '';
+                    document.getElementById('clienteNomeFantasia').value = cliente.nomeFantasia || '';
+                    document.getElementById('clienteTelefone').value = cliente.telefone || '';
+                    document.getElementById('clienteCpfCnpj').value = cliente.cpfCnpj || '';
+                    document.getElementById('clienteInscricaoEstadual').value = cliente.inscricaoEstadual || '';
+                    document.getElementById('clienteCep').value = cliente.cep || '';
+                    document.getElementById('clienteEndereco').value = cliente.endereco || '';
+                    document.getElementById('clienteBairro').value = cliente.bairro || '';
+                    document.getElementById('clienteCidade').value = cliente.cidade || '';
+                    document.getElementById('clienteEstado').value = cliente.estado || '';
+                    document.getElementById('clienteReferencia').value = cliente.referencia || '';
+                    
+                    // Mostrar foto existente
+                    if (cliente.foto) {
+                        document.getElementById('fotoPreview').src = cliente.foto;
+                        document.getElementById('fotoPreview').style.display = 'block';
+                    } else {
+                        document.getElementById('fotoPreview').style.display = 'none';
+                    }
+                }
+            } else {
+                document.getElementById('clienteForm').reset();
+                document.getElementById('clienteId').value = '';
+                document.getElementById('fotoPreview').style.display = 'none';
+            }
+            
+            modal.show();
+        }
+
+        function buscarCEP() {
+            const cep = document.getElementById('clienteCep').value.replace(/\D/g, '');
+            
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('clienteEndereco').value = data.logradouro || '';
+                            document.getElementById('clienteBairro').value = data.bairro || '';
+                            document.getElementById('clienteCidade').value = data.localidade || '';
+                            document.getElementById('clienteEstado').value = data.uf || '';
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar CEP:', error));
+            }
+        }
+
+        function salvarCliente() {
+            const id = document.getElementById('clienteId').value;
+            const razaoSocial = document.getElementById('clienteRazaoSocial').value;
+            const nomeFantasia = document.getElementById('clienteNomeFantasia').value;
+            const telefone = document.getElementById('clienteTelefone').value;
+            const cpfCnpj = document.getElementById('clienteCpfCnpj').value;
+            const inscricaoEstadual = document.getElementById('clienteInscricaoEstadual').value.trim();
+            const cep = document.getElementById('clienteCep').value;
+            const endereco = document.getElementById('clienteEndereco').value;
+            const bairro = document.getElementById('clienteBairro').value;
+            const cidade = document.getElementById('clienteCidade').value;
+            const estado = document.getElementById('clienteEstado').value;
+            const referencia = document.getElementById('clienteReferencia').value;
+            const fotoInput = document.getElementById('clienteFoto');
+            
+            if (!razaoSocial || !telefone) {
+                alert('Razão Social e Telefone são obrigatórios!');
+                return;
+            }
+            
+            const cliente = {
+                id: id || Date.now().toString(),
+                razaoSocial,
+                nomeFantasia,
+                telefone,
+                cpfCnpj,
+                inscricaoEstadual,
+                cep,
+                endereco,
+                bairro,
+                cidade,
+                estado,
+                referencia,
+                foto: null
+            };
+            
+            // Processar foto
+            if (fotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    cliente.foto = e.target.result;
+                    salvarClienteCompleto(cliente, id);
+                };
+                reader.readAsDataURL(fotoInput.files[0]);
+            } else {
+                if (id) {
+                    const clienteExistente = clientes.find(c => c.id === id);
+                    if (clienteExistente) cliente.foto = clienteExistente.foto;
+                }
+                salvarClienteCompleto(cliente, id);
+            }
+        }
+
+        function salvarClienteCompleto(cliente, id) {
+            if (id) {
+                const index = clientes.findIndex(c => c.id === id);
+                clientes[index] = cliente;
+            } else {
+                clientes.push(cliente);
+            }
+            
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            carregarClientes();
+            carregarClientesPedido();
+            atualizarRelatorios();
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('clienteModal'));
+            modal.hide();
+        }
+
+        function editarCliente(id) {
+            event.stopPropagation();
+            if (confirm('Deseja editar este cliente?')) {
+                showClienteForm(id);
+            }
+        }
+
+        function excluirCliente(id) {
+            if (confirm('Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.')) {
+                clientes = clientes.filter(c => c.id !== id);
+                localStorage.setItem('clientes', JSON.stringify(clientes));
+                carregarClientes();
+                carregarClientesPedido();
+                atualizarRelatorios();
+            }
+        }
+
+        function carregarClientes() {
+            const tbody = document.getElementById('clientesTable');
+            tbody.innerHTML = '';
+            
+            clientes.forEach(cliente => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cliente.foto ? `<img src="${cliente.foto}" class="foto-preview">` : '📷'}</td>
+                    <td>${cliente.razaoSocial}</td>
+                    <td>${cliente.nomeFantasia || ''}</td>
+                    <td>${cliente.telefone}</td>
+                    <td>${cliente.cidade || 'N/A'}</td>
+                    <td>${cliente.inscricaoEstadual || 'N/A'}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editarCliente('${cliente.id}')" title="Editar">✏️</button>
+                        <button class="action-btn delete-btn" onclick="excluirCliente('${cliente.id}')" title="Excluir">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarClientes() {
+            const filtro = document.getElementById('searchCliente').value.toLowerCase();
+            const linhas = document.querySelectorAll('#clientesTable tr');
+            
+            linhas.forEach(linha => {
+                const texto = linha.textContent.toLowerCase();
+                linha.style.display = texto.includes(filtro) ? '' : 'none';
+            });
+        }
+
+        // Produtos
+        function showProdutoForm(id = null) {
+            const modal = new bootstrap.Modal(document.getElementById('produtoModal'));
+            carregarUnidadesProduto();
+            
+            if (id) {
+                const produto = produtos.find(p => p.id === id);
+                if (produto) {
+                    document.getElementById('produtoId').value = produto.id;
+                    document.getElementById('produtoNome').value = produto.nome;
+                    document.getElementById('produtoUnidade').value = produto.unidade;
+                    document.getElementById('produtoPrecoKg').value = produto.precoKg;
+                    document.getElementById('produtoQuantidadeKg').value = produto.quantidadeKg;
+                    document.getElementById('produtoPrecoTotal').value = produto.precoTotal.toFixed(2).replace('.', ',');
+                    document.getElementById('produtoComissao').value = produto.comissao != null ? produto.comissao : '';
+                    document.getElementById('produtoEstoque').value = produto.estoque != null ? produto.estoque : '';
+                    document.getElementById('produtoDescricao').value = produto.descricao || '';
+                }
+            } else {
+                document.getElementById('produtoForm').reset();
+                document.getElementById('produtoId').value = '';
+            }
+            
+            modal.show();
+        }
+
+        function calcularPrecoTotal() {
+            const precoKg = parseFloat(document.getElementById('produtoPrecoKg').value) || 0;
+            const quantidadeKg = parseFloat(document.getElementById('produtoQuantidadeKg').value) || 0;
+            const precoTotal = precoKg * quantidadeKg;
+            document.getElementById('produtoPrecoTotal').value = precoTotal.toFixed(2).replace('.', ',');
+        }
+
+        function salvarProduto() {
+            const id = document.getElementById('produtoId').value;
+            const nome = document.getElementById('produtoNome').value.trim();
+            const unidade = document.getElementById('produtoUnidade').value;
+            const precoKg = parseFloat(document.getElementById('produtoPrecoKg').value);
+            const quantidadeKg = parseFloat(document.getElementById('produtoQuantidadeKg').value);
+            const precoTotal = precoKg * quantidadeKg;
+            const comissao = parseFloat(document.getElementById('produtoComissao').value);
+            const estoque = document.getElementById('produtoEstoque').value ? parseFloat(document.getElementById('produtoEstoque').value) : null;
+            const descricao = document.getElementById('produtoDescricao').value.trim();
+            const fotoInput = document.getElementById('produtoFoto');
+            
+            if (!nome || !unidade || isNaN(precoKg) || isNaN(quantidadeKg) || isNaN(comissao)) {
+                alert('Preencha todos os campos obrigatórios corretamente!');
+                return;
+            }
+            
+            const produto = {
+                id: id || Date.now().toString(),
+                nome,
+                unidade,
+                precoKg,
+                quantidadeKg,
+                precoTotal,
+                comissao,
+                estoque,
+                descricao,
+                foto: null
+            };
+            
+            if (fotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    produto.foto = e.target.result;
+                    continuarSalvarProduto(produto, id);
+                };
+                reader.readAsDataURL(fotoInput.files[0]);
+            } else {
+                if (id) {
+                    const produtoExistente = produtos.find(p => p.id === id);
+                    if (produtoExistente) produto.foto = produtoExistente.foto;
+                }
+                continuarSalvarProduto(produto, id);
+            }
+        }
+
+        function continuarSalvarProduto(produto, id) {
+            if (id) {
+                const index = produtos.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    produtos[index] = produto;
+                }
+            } else {
+                produtos.push(produto);
+            }
+            
+            localStorage.setItem('produtos', JSON.stringify(produtos));
+            carregarProdutos();
+            carregarProdutosPedido();
+            carregarCatalogo();
+            atualizarRelatorios();
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('produtoModal'));
+            modal.hide();
+        }
+
+        function editarProduto(id) {
+            showProdutoForm(id);
+        }
+
+        function excluirProduto(id) {
+            if (confirm('Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.')) {
+                produtos = produtos.filter(p => p.id !== id);
+                localStorage.setItem('produtos', JSON.stringify(produtos));
+                carregarProdutos();
+                carregarProdutosPedido();
+                carregarCatalogo();
+                atualizarRelatorios();
+            }
+        }
+
+        function carregarProdutos() {
+            const tbody = document.getElementById('produtosTable');
+            tbody.innerHTML = '';
+            
+            produtos.forEach(produto => {
+                const emoji = obterEmojiProduto(produto.nome);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${produto.foto ? `<img src="${produto.foto}" class="foto-preview">` : emoji}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.unidade}</td>
+                    <td>R$ ${produto.precoKg.toFixed(2).replace('.', ',')}</td>
+                    <td>${produto.quantidadeKg} Kg</td>
+                    <td>R$ ${produto.precoTotal.toFixed(2).replace('.', ',')}</td>
+                    <td>${produto.comissao}%</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editarProduto('${produto.id}')" title="Editar">✏️</button>
+                        <button class="action-btn delete-btn" onclick="excluirProduto('${produto.id}')" title="Excluir">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarProdutos() {
+            const filtro = document.getElementById('searchProduto').value.toLowerCase();
+            const linhas = document.querySelectorAll('#produtosTable tr');
+            
+            linhas.forEach(linha => {
+                const texto = linha.textContent.toLowerCase();
+                linha.style.display = texto.includes(filtro) ? '' : 'none';
+            });
+        }
+
+        // Pedidos
+        function carregarClientesPedido() {
+            const select = document.getElementById('pedidoCliente');
+            select.innerHTML = '<option value="">Selecione um cliente</option>';
+            
+            clientes.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.id;
+                option.textContent = cliente.razaoSocial;
+                select.appendChild(option);
+            });
+        }
+
+        function carregarProdutosPedido() {
+            const select = document.getElementById('pedidoProduto');
+            select.innerHTML = '<option value="">Selecione um produto</option>';
+            
+            produtos.forEach(produto => {
+                const option = document.createElement('option');
+                option.value = produto.id;
+                option.textContent = `${produto.nome} - R$ ${produto.precoKg.toFixed(2).replace('.', ',')}/Kg`;
+                select.appendChild(option);
+            });
+        }
+
+        function calcularTotalItem() {
+            const produtoId = document.getElementById('pedidoProduto').value;
+            const quantidade = parseFloat(document.getElementById('pedidoQuantidade').value) || 0;
+            
+            if (produtoId && quantidade > 0) {
+                const produto = produtos.find(p => p.id === produtoId);
+                if (produto) {
+                    const total = produto.precoKg * quantidade;
+                    document.getElementById('pedidoTotalItem').value = `R$ ${total.toFixed(2).replace('.', ',')}`;
+                }
+            } else {
+                document.getElementById('pedidoTotalItem').value = '';
+            }
+        }
+
+        function adicionarItemPedido() {
+            const produtoId = document.getElementById('pedidoProduto').value;
+            const quantidade = parseFloat(document.getElementById('pedidoQuantidade').value);
+            
+            if (!produtoId || !quantidade || quantidade <= 0) {
+                alert('Selecione um produto e informe a quantidade!');
+                return;
+            }
+            
+            const produto = produtos.find(p => p.id === produtoId);
+            const total = produto.precoKg * quantidade;
+            
+            const item = {
+                produtoId,
+                produtoNome: produto.nome,
+                quantidade,
+                precoUnitario: produto.precoKg,
+                total
+            };
+            
+            itensPedidoAtual.push(item);
+            carregarItensPedido();
+            
+            // Limpar campos
+            document.getElementById('pedidoProduto').value = '';
+            document.getElementById('pedidoQuantidade').value = '';
+            document.getElementById('pedidoTotalItem').value = '';
+        }
+
+        function carregarItensPedido() {
+            const tbody = document.getElementById('itensPedido');
+            tbody.innerHTML = '';
+            let totalPedido = 0;
+            
+            itensPedidoAtual.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.produtoNome}</td>
+                    <td>${item.quantidade} Kg</td>
+                    <td>R$ ${item.precoUnitario.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${item.total.toFixed(2).replace('.', ',')}</td>
+                    <td>
+                        <button class="action-btn delete-btn" onclick="removerItemPedido(${index})" title="Remover">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+                totalPedido += item.total;
+            });
+            
+            document.getElementById('totalPedido').textContent = totalPedido.toFixed(2).replace('.', ',');
+        }
+
+        function removerItemPedido(index) {
+            itensPedidoAtual.splice(index, 1);
+            carregarItensPedido();
+        }
+
+        function registrarVendaAutomatica(pedido) {
+            // Calcular comissão total do pedido
+            let comissaoTotal = 0;
+            
+            pedido.itens.forEach(item => {
+                const produto = produtos.find(p => p.id === item.produtoId);
+                if (produto && produto.comissao) {
+                    // Comissão específica por produto
+                    comissaoTotal += item.total * (produto.comissao / 100);
+                } else {
+                    // Comissão padrão
+                    comissaoTotal += item.total * (COMISSAO_PADRAO / 100);
+                }
+            });
+            
+            const venda = {
+                id: Date.now().toString(),
+                pedidoId: pedido.id,
+                clienteId: pedido.clienteId,
+                clienteNome: pedido.clienteNome,
+                dataVenda: new Date().toLocaleDateString('pt-BR'),
+                valorTotal: pedido.total,
+                comissaoTotal: comissaoTotal,
+                itens: pedido.itens.map(item => ({
+                    produtoId: item.produtoId,
+                    produtoNome: item.produtoNome,
+                    valor: item.total,
+                    comissao: produtos.find(p => p.id === item.produtoId)?.comissao || COMISSAO_PADRAO
+                }))
+            };
+            
+            vendas.push(venda);
+            localStorage.setItem('vendas', JSON.stringify(vendas));
+        }
+
+        function finalizarPedido() {
+            const clienteId = document.getElementById('pedidoCliente').value;
+            const dataEntrega = document.getElementById('pedidoDataEntrega').value;
+            const formaPagamento = document.getElementById('pedidoFormaPagamento').value;
+            const prazoPagamento = document.getElementById('pedidoPrazoPagamento').value;
+            
+            if (!clienteId || !dataEntrega || !formaPagamento || !prazoPagamento || itensPedidoAtual.length === 0) {
+                alert('Preencha todos os campos e adicione pelo menos um item!');
+                return;
+            }
+            
+            const cliente = clientes.find(c => c.id === clienteId);
+            const totalPedido = itensPedidoAtual.reduce((sum, item) => sum + item.total, 0);
+            
+            const pedido = {
+                id: Date.now().toString(),
+                clienteId,
+                clienteNome: cliente.razaoSocial,
+                dataEntrega,
+                formaPagamento,
+                prazoPagamento,
+                itens: [...itensPedidoAtual],
+                total: totalPedido,
+                status: 'Pendente',
+                dataPedido: new Date().toLocaleDateString('pt-BR')
+            };
+            
+            pedidos.push(pedido);
+            localStorage.setItem('pedidos', JSON.stringify(pedidos));
+            
+            // Registrar venda automática
+            registrarVendaAutomatica(pedido);
+            
+            // Limpar formulário
+            document.getElementById('pedidoCliente').value = '';
+            document.getElementById('pedidoDataEntrega').value = '';
+            document.getElementById('pedidoFormaPagamento').value = '';
+            document.getElementById('pedidoPrazoPagamento').value = '';
+            itensPedidoAtual = [];
+            carregarItensPedido();
+            
+            atualizarRelatorios();
+            atualizarVendas();
+            alert('Pedido finalizado com sucesso!');
+        }
+
+        // Função modificada para carregar pedidos do mês atual
+        function carregarPedidosRealizadosMesAtual() {
+            const tbody = document.getElementById('pedidosRealizadosTable');
+            const nenhumPedido = document.getElementById('nenhumPedido');
+            
+            tbody.innerHTML = '';
+            
+            // Obter data atual
+            const hoje = new Date();
+            const mesAtual = hoje.getMonth();
+            const anoAtual = hoje.getFullYear();
+            
+            // Filtrar pedidos do mês atual
+            const pedidosMesAtual = pedidos.filter(pedido => {
+                if (!pedido.dataPedido) return false;
+                
+                // Converter data do pedido para objeto Date
+                const partes = pedido.dataPedido.split('/');
+                if (partes.length !== 3) return false;
+                
+                const dia = parseInt(partes[0], 10);
+                const mes = parseInt(partes[1], 10) - 1; // JS months are 0-indexed
+                const ano = parseInt(partes[2], 10);
+                
+                return mes === mesAtual && ano === anoAtual;
+            });
+            
+            if (pedidosMesAtual.length === 0) {
+                nenhumPedido.style.display = 'block';
+                return;
+            }
+            
+            nenhumPedido.style.display = 'none';
+            
+            pedidosMesAtual.forEach(pedido => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${pedido.dataPedido}</td>
+                    <td>${pedido.clienteNome}</td>
+                    <td>R$ ${pedido.total.toFixed(2).replace('.', ',')}</td>
+                    <td><span class="badge bg-warning">${pedido.status}</span></td>
+                    <td>
+                        <button class="action-btn pdf-btn" onclick="gerarPDFPedido('${pedido.id}')" title="Gerar PDF">📄</button>
+                        <button class="action-btn delete-btn" onclick="excluirPedido('${pedido.id}')" title="Excluir">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function gerarPDFPedido(id) {
+            const pedido = pedidos.find(p => p.id === id);
+            if (!pedido) return;
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('PEDIDO - FOMETTO 2.0', 20, 20);
+            
+            doc.setFontSize(12);
+            doc.text(`Pedido: ${pedido.id}`, 20, 40);
+            doc.text(`Cliente: ${pedido.clienteNome}`, 20, 50);
+            doc.text(`Data do Pedido: ${pedido.dataPedido}`, 20, 60);
+            doc.text(`Data de Entrega: ${formatarDataParaBR(pedido.dataEntrega)}`, 20, 70);
+            doc.text(`Forma de Pagamento: ${pedido.formaPagamento}`, 20, 80);
+            doc.text(`Prazo: ${pedido.prazoPagamento}`, 20, 90);
+            
+            doc.text('ITENS:', 20, 110);
+            let y = 120;
+            pedido.itens.forEach(item => {
+                doc.text(`${item.produtoNome} - ${item.quantidade}Kg - R$ ${item.total.toFixed(2).replace('.', ',')}`, 20, y);
+                y += 10;
+            });
+            
+            doc.setFontSize(14);
+            doc.text(`TOTAL: R$ ${pedido.total.toFixed(2).replace('.', ',')}`, 20, y + 10);
+            
+            // Gerar blob e compartilhar
+            const pdfBlob = doc.output('blob');
+            compartilharPDFWhatsApp(pdfBlob, `pedido_${pedido.id}.pdf`);
+        }
+
+        function formatarDataParaBR(dataISO) {
+            if (!dataISO) return '';
+            const partes = dataISO.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        function excluirPedido(id) {
+            if (confirm('Tem certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.')) {
+                pedidos = pedidos.filter(p => p.id !== id);
+                localStorage.setItem('pedidos', JSON.stringify(pedidos));
+                carregarPedidosRealizadosMesAtual();
+                atualizarRelatorios();
+                atualizarVendas();
+            }
+        }
+
+        // Catálogo
+        function carregarCatalogo() {
+            const container = document.getElementById('catalogoProdutos');
+            container.innerHTML = '';
+            
+            if (produtos.length === 0) {
+                container.innerHTML = '<p class="text-center">Nenhum produto cadastrado.</p>';
+                return;
+            }
+            
+            produtos.forEach(produto => {
+                const emoji = obterEmojiProduto(produto.nome);
+                const div = document.createElement('div');
+                div.className = 'catalogo-item';
+                div.innerHTML = `
+                    ${produto.foto ? `<img src="${produto.foto}" class="catalogo-foto" alt="${produto.nome}">` : `<div class="catalogo-foto">${emoji}</div>`}
+                    <div class="catalogo-nome">${produto.nome}</div>
+                    <div class="catalogo-unidade">${produto.quantidadeKg} ${produto.unidade} por unidade</div>
+                    <div class="catalogo-preco">R$ ${produto.precoTotal.toFixed(2).replace('.', ',')}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function compartilharCatalogo() {
+            let mensagem = '🐟 FOMETTO 2.0 - CATÁLOGO DE PRODUTOS 🐟\n\n';
+            
+            produtos.forEach(produto => {
+                const emoji = obterEmojiProduto(produto.nome);
+                mensagem += `${emoji} ${produto.nome}\n`;
+                mensagem += `   💰 Valor por Kg: R$ ${produto.precoKg.toFixed(2).replace('.', ',')}\n`;
+                mensagem += `   📦 Valor Total (${produto.quantidadeKg}${produto.unidade}): R$ ${produto.precoTotal.toFixed(2).replace('.', ',')}\n\n`;
+            });
+            
+            mensagem += '📱 Faça seu pedido pelo WhatsApp!\n';
+            mensagem += '🚚 Entregamos em toda a região!';
+            
+            return mensagem;
+        }
+
+        function compartilharCatalogoWhatsApp() {
+            const mensagem = compartilharCatalogo();
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+
+        function compartilharCatalogoEmail() {
+            const mensagem = compartilharCatalogo();
+            const subject = 'Catálogo de Produtos - Fometto 2.0';
+            const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mensagem)}`;
+            window.open(url);
+        }
+
+        function gerarPDFCatalogo() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('CATÁLOGO DE PRODUTOS - FOMETTO 2.0', 20, 20);
+            
+            doc.setFontSize(12);
+            doc.text('Produto', 20, 40);
+            doc.text('Preço/Kg', 80, 40);
+            doc.text('Preço Total', 140, 40);
+            
+            let y = 50;
+            produtos.forEach(produto => {
+                doc.text(`${produto.nome}`, 20, y);
+                doc.text(`R$ ${produto.precoKg.toFixed(2).replace('.', ',')}`, 80, y);
+                doc.text(`R$ ${produto.precoTotal.toFixed(2).replace('.', ',')}`, 140, y);
+                y += 10;
+            });
+            
+            // Gerar blob e compartilhar
+            const pdfBlob = doc.output('blob');
+            compartilharPDFWhatsApp(pdfBlob, 'catalogo_produtos.pdf');
+        }
+
+        // Vendas
+        function atualizarVendas() {
+            // Atualizar totais
+            document.getElementById('totalVendas').textContent = vendas.length;
+            
+            const totalComissoes = vendas.reduce((sum, venda) => sum + venda.comissaoTotal, 0);
+            document.getElementById('totalComissoes').textContent = `R$ ${totalComissoes.toFixed(2).replace('.', ',')}`;
+            
+            const totalPedidosVendidos = vendas.length;
+            document.getElementById('totalPedidosVendidos').textContent = totalPedidosVendidos;
+            
+            // Carregar tabela de vendas
+            const tbody = document.getElementById('vendasTable');
+            tbody.innerHTML = '';
+            
+            vendas.forEach(venda => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${venda.dataVenda}</td>
+                    <td>${venda.clienteNome}</td>
+                    <td>R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${venda.comissaoTotal.toFixed(2).replace('.', ',')}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="visualizarVenda('${venda.id}')" title="Detalhes">👁️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function visualizarVenda(id) {
+            const venda = vendas.find(v => v.id === id);
+            if (venda) {
+                let mensagem = `Venda: ${venda.id}\n`;
+                mensagem += `Cliente: ${venda.clienteNome}\n`;
+                mensagem += `Data: ${venda.dataVenda}\n`;
+                mensagem += `Valor Total: R$ ${venda.valorTotal.toFixed(2).replace('.', ',')}\n`;
+                mensagem += `Comissão Total: R$ ${venda.comissaoTotal.toFixed(2).replace('.', ',')}\n`;
+                mensagem += `\nITENS VENDIDOS:\n`;
+                venda.itens.forEach(item => {
+                    mensagem += `- ${item.produtoNome}: R$ ${item.valor.toFixed(2).replace('.', ',')} (Comissão: ${item.comissao}%)\n`;
+                });
+                
+                alert(mensagem);
+            }
+        }
+
+        // Configurações
+        function carregarConfiguracoes() {
+            carregarListaUnidades();
+            carregarListaFormasPagamento();
+            carregarListaPrazosPagamento();
+        }
+
+        function carregarUnidadesProduto() {
+            const select = document.getElementById('produtoUnidade');
+            select.innerHTML = '<option value="">Selecione</option>';
+            
+            unidades.forEach(unidade => {
+                const option = document.createElement('option');
+                option.value = unidade;
+                option.textContent = unidade;
+                select.appendChild(option);
+            });
+        }
+
+        function adicionarUnidade() {
+            const novaUnidade = document.getElementById('novaUnidade').value.trim();
+            if (novaUnidade && !unidades.includes(novaUnidade)) {
+                unidades.push(novaUnidade);
+                localStorage.setItem('unidades', JSON.stringify(unidades));
+                document.getElementById('novaUnidade').value = '';
+                carregarListaUnidades();
+            }
+        }
+
+        function carregarListaUnidades() {
+            const lista = document.getElementById('listaUnidades');
+            lista.innerHTML = '';
+            
+            unidades.forEach(unidade => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                div.innerHTML = `
+                    <span>${unidade}</span>
+                    <button class="delete-btn-small" onclick="excluirUnidade('${unidade}')" title="Excluir">Excluir</button>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function excluirUnidade(unidade) {
+            if (confirm('Tem certeza que deseja excluir esta unidade? Esta ação não pode ser desfeita.')) {
+                unidades = unidades.filter(u => u !== unidade);
+                localStorage.setItem('unidades', JSON.stringify(unidades));
+                carregarListaUnidades();
+            }
+        }
+
+        function adicionarFormaPagamento() {
+            const novaForma = document.getElementById('novaFormaPagamento').value.trim();
+            if (novaForma && !formasPagamento.includes(novaForma)) {
+                formasPagamento.push(novaForma);
+                localStorage.setItem('formasPagamento', JSON.stringify(formasPagamento));
+                document.getElementById('novaFormaPagamento').value = '';
+                carregarListaFormasPagamento();
+                carregarFormasPagamentoPedido();
+            }
+        }
+
+        function carregarListaFormasPagamento() {
+            const lista = document.getElementById('listaFormasPagamento');
+            lista.innerHTML = '';
+            
+            formasPagamento.forEach(forma => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                div.innerHTML = `
+                    <span>${forma}</span>
+                    <button class="delete-btn-small" onclick="excluirFormaPagamento('${forma}')" title="Excluir">Excluir</button>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function excluirFormaPagamento(forma) {
+            if (confirm('Tem certeza que deseja excluir esta forma de pagamento? Esta ação não pode ser desfeita.')) {
+                formasPagamento = formasPagamento.filter(f => f !== forma);
+                localStorage.setItem('formasPagamento', JSON.stringify(formasPagamento));
+                carregarListaFormasPagamento();
+                carregarFormasPagamentoPedido();
+            }
+        }
+
+        function carregarFormasPagamentoPedido() {
+            const select = document.getElementById('pedidoFormaPagamento');
+            select.innerHTML = '<option value="">Selecione</option>';
+            
+            formasPagamento.forEach(forma => {
+                const option = document.createElement('option');
+                option.value = forma;
+                option.textContent = forma;
+                select.appendChild(option);
+            });
+        }
+
+        function adicionarPrazoPagamento() {
+            const novoPrazo = document.getElementById('novoPrazoPagamento').value.trim();
+            if (novoPrazo && !prazosPagamento.includes(novoPrazo)) {
+                prazosPagamento.push(novoPrazo);
+                localStorage.setItem('prazosPagamento', JSON.stringify(prazosPagamento));
+                document.getElementById('novoPrazoPagamento').value = '';
+                carregarListaPrazosPagamento();
+                carregarPrazosPagamentoPedido();
+            }
+        }
+
+        function carregarListaPrazosPagamento() {
+            const lista = document.getElementById('listaPrazosPagamento');
+            lista.innerHTML = '';
+            
+            prazosPagamento.forEach(prazo => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                div.innerHTML = `
+                    <span>${prazo}</span>
+                    <button class="delete-btn-small" onclick="excluirPrazoPagamento('${prazo}')" title="Excluir">Excluir</button>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function excluirPrazoPagamento(prazo) {
+            if (confirm('Tem certeza que deseja excluir este prazo de pagamento? Esta ação não pode ser desfeita.')) {
+                prazosPagamento = prazosPagamento.filter(p => p !== prazo);
+                localStorage.setItem('prazosPagamento', JSON.stringify(prazosPagamento));
+                carregarListaPrazosPagamento();
+                carregarPrazosPagamentoPedido();
+            }
+        }
+
+        function carregarPrazosPagamentoPedido() {
+            const select = document.getElementById('pedidoPrazoPagamento');
+            select.innerHTML = '<option value="">Selecione</option>';
+            
+            prazosPagamento.forEach(prazo => {
+                const option = document.createElement('option');
+                option.value = prazo;
+                option.textContent = prazo;
+                select.appendChild(option);
+            });
+        }
+
+        // Ferramentas
+        function showCalendario() {
+            showScreen('calendarioScreen');
+        }
+
+        function showCalculadora() {
+            showScreen('calculadoraScreen');
+        }
+
+        function showBlocoNotas() {
+            showScreen('blocoNotasScreen');
+        }
+
+        // Calendário com feriados
+        function ehFeriado(dia, mes, ano) {
+            const dataFormatada = String(mes + 1).padStart(2, '0') + '-' + String(dia).padStart(2, '0');
+            return feriados[ano] && feriados[ano].includes(dataFormatada);
+        }
+
+        function renderizarCalendario() {
+            const titulo = document.getElementById('calendarTitle');
+            const grid = document.getElementById('calendarGrid');
+            
+            // Limpar dias anteriores (mantendo os headers)
+            while (grid.children.length > 7) {
+                grid.removeChild(grid.lastChild);
+            }
+            
+            // Definir título
+            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            titulo.textContent = `${meses[calendarioMes]} ${calendarioAno}`;
+            
+            // Obter primeiro dia do mês e último dia
+            const primeiroDia = new Date(calendarioAno, calendarioMes, 1).getDay();
+            const diasNoMes = new Date(calendarioAno, calendarioMes + 1, 0).getDate();
+            
+            // Adicionar espaços vazios para os dias antes do primeiro dia do mês
+            for (let i = 0; i < primeiroDia; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'calendar-day';
+                grid.appendChild(emptyDiv);
+            }
+            
+            // Adicionar dias do mês
+            const hoje = new Date();
+            for (let dia = 1; dia <= diasNoMes; dia++) {
+                const diaDiv = document.createElement('div');
+                diaDiv.className = 'calendar-day';
+                diaDiv.textContent = dia;
+                
+                // Destacar dia atual
+                if (dia === hoje.getDate() && calendarioMes === hoje.getMonth() && calendarioAno === hoje.getFullYear()) {
+                    diaDiv.classList.add('today');
+                }
+                
+                // Destacar feriados
+                if (ehFeriado(dia, calendarioMes, calendarioAno)) {
+                    diaDiv.classList.add('holiday');
+                    diaDiv.title = 'Feriado Nacional';
+                }
+                
+                diaDiv.onclick = () => selecionarDia(dia);
+                grid.appendChild(diaDiv);
+            }
+        }
+
+        function mudarMes(delta) {
+            calendarioMes += delta;
+            if (calendarioMes < 0) {
+                calendarioMes = 11;
+                calendarioAno--;
+            } else if (calendarioMes > 11) {
+                calendarioMes = 0;
+                calendarioAno++;
+            }
+            renderizarCalendario();
+        }
+
+        function selecionarDia(dia) {
+            const feriado = ehFeriado(dia, calendarioMes, calendarioAno) ? ' (Feriado Nacional)' : '';
+            alert(`Você selecionou o dia ${dia}/${calendarioMes + 1}/${calendarioAno}${feriado}`);
+        }
+
+        // Calculadora com porcentagem
+        function adicionarCalculadora(valor) {
+            const display = document.getElementById('calculadoraDisplay');
+            
+            if (valor === 'Backspace') {
+                expressaoCalculadora = expressaoCalculadora.slice(0, -1);
+                display.textContent = expressaoCalculadora || '0';
+            } else if (valor === '=') {
+                calcularResultado();
+            } else {
+                if (display.textContent === '0' && valor !== '.') {
+                    expressaoCalculadora = valor;
+                } else {
+                    expressaoCalculadora += valor;
+                }
+                display.textContent = expressaoCalculadora;
+            }
+        }
+
+        function calcularResultado() {
+            const display = document.getElementById('calculadoraDisplay');
+            try {
+                // Substituir × por * para avaliação
+                let expressao = expressaoCalculadora.replace(/×/g, '*');
+                const resultado = eval(expressao);
+                display.textContent = resultado.toString().replace('.', ',');
+                expressaoCalculadora = resultado.toString();
+                ultimoResultado = resultado;
+            } catch (error) {
+                display.textContent = 'Erro';
+                expressaoCalculadora = '';
+            }
+        }
+
+        function calcularPorcentagem() {
+            const display = document.getElementById('calculadoraDisplay');
+            try {
+                if (expressaoCalculadora) {
+                    const valor = parseFloat(expressaoCalculadora.replace(',', '.'));
+                    const resultado = valor / 100;
+                    display.textContent = resultado.toString().replace('.', ',');
+                    expressaoCalculadora = resultado.toString();
+                }
+            } catch (error) {
+                display.textContent = 'Erro';
+                expressaoCalculadora = '';
+            }
+        }
+
+        function limparCalculadora() {
+            expressaoCalculadora = '';
+            document.getElementById('calculadoraDisplay').textContent = '0';
+        }
+
+        // Bloco de Notas
+        function carregarNotas() {
+            const notas = localStorage.getItem('notas');
+            if (notas) {
+                document.getElementById('notesTextarea').value = notas;
+            }
+        }
+
+        function salvarNotas() {
+            const notas = document.getElementById('notesTextarea').value;
+            localStorage.setItem('notas', notas);
+            alert('Notas salvas com sucesso!');
+        }
+
+        function limparNotas() {
+            if (confirm('Tem certeza que deseja limpar todas as notas?')) {
+                document.getElementById('notesTextarea').value = '';
+                localStorage.removeItem('notas');
+                alert('Notas limpas com sucesso!');
+            }
+        }
+
+        // Relatórios
+        function atualizarRelatorios() {
+            document.getElementById('totalClientes').textContent = clientes.length;
+            document.getElementById('totalProdutos').textContent = produtos.length;
+            document.getElementById('totalPedidos').textContent = pedidos.length;
+        }
+
+        // Compartilhamento de PDF
+        function compartilharPDFWhatsApp(pdfBlob, fileName) {
+            if (navigator.share && navigator.canShare) {
+                const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+                navigator.share({
+                    files: [file],
+                    title: fileName,
+                    text: 'Compartilhando documento'
+                }).catch(error => console.log('Erro ao compartilhar:', error));
+            } else {
+                // Fallback para download
+                const url = URL.createObjectURL(pdfBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Carregamento inicial
+        function carregarDados() {
+            carregarClientes();
+            carregarProdutos();
+            carregarClientesPedido();
+            carregarProdutosPedido();
+            carregarFormasPagamentoPedido();
+            carregarPrazosPagamentoPedido();
+        }
+    </script>
+</body>
+</html>
