@@ -2213,7 +2213,7 @@
                           'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
             titulo.textContent = `${meses[calendarioMes]} ${calendarioAno}`;
             
-            // Obter primeiro dia do mês e último dia
+            // Obter primeiro dia do mês e último di
             const primeiroDia = new Date(calendarioAno, calendarioMes, 1).getDay();
             const diasNoMes = new Date(calendarioAno, calendarioMes + 1, 0).getDate();
             
@@ -2303,7 +2303,7 @@
             try {
                 if (expressaoCalculadora) {
                     const valor = parseFloat(expressaoCalculadora.replace(',', '.'));
-                    const resultado = valor / 100;
+                    const resultado = valor* (porcentagem/100);
                     display.textContent = resultado.toString().replace('.', ',');
                     expressaoCalculadora = resultado.toString();
                 }
@@ -2384,6 +2384,7 @@
 </script> 
 </body>
 </html>
+
 
 
 
