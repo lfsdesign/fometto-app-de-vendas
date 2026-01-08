@@ -2303,7 +2303,7 @@
             try {
                 if (expressaoCalculadora) {
                     const valor = parseFloat(expressaoCalculadora.replace(',', '.'));
-                    const resultado = valor* (porcentagem/100);
+                    const resultado = valor*porcentagem;
                     display.textContent = resultado.toString().replace('.', ',');
                     expressaoCalculadora = resultado.toString();
                 }
@@ -2384,6 +2384,7 @@
 </script> 
 </body>
 </html>
+
 
 
 
