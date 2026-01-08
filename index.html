@@ -2262,59 +2262,59 @@
         function selecionarDia(dia) {
             const feriado = ehFeriado(dia, calendarioMes, calendarioAno) ? ' (Feriado Nacional)' : '';
             alert(`Você selecionou o dia ${dia}/${calendarioMes + 1}/${calendarioAno}${feriado}`);
-        }
-
-        // Calculadora com porcentagem
-        function adicionarCalculadora(valor) {
-            const display = document.getElementById('calculadoraDisplay');
-            
-            if (valor === 'Backspace') {
-                expressaoCalculadora = expressaoCalculadora.slice(0, -1);
-                display.textContent = expressaoCalculadora || '0';
-            } else if (valor === '=') {
-                calcularResultado();
-            } else {
-                if (display.textContent === '0' && valor !== '.') {
-                    expressaoCalculadora = valor;
-                } else {
-                    expressaoCalculadora += valor;
-                }
-                display.textContent = expressaoCalculadora;
             }
-        }
+<script>
+let expressaoCalculadora = '';
 
-        function calcularResultado() {
-            const display = document.getElementById('calculadoraDisplay');
-            try {
-                // Substituir × por * para avaliação
-                let expressao = expressaoCalculadora
-  .replace(/x/g, '*')
-  .replace(/(\d+)%/g, '($1/100)');
-                const resultado = eval(expressao);
-                display.textContent = resultado.toString().replace('.', ',');
-                expressaoCalculadora = resultado.toString();
-                ultimoResultado = resultado;
-            } catch (error) {
-                display.textContent = 'Erro';
-                expressaoCalculadora = '';
-            }
-        }
+function adicionarCalculadora(valor) {
+  const display = document.getElementById('calculadoraDisplay');
 
-        function calcularPorcentagem() {
-            const display = document.getElementById('calculadoraDisplay');
-            try {
-                if (expressaoCalculadora) {
-                    const valor = parseFloat(expressaoCalculadora.replace(',', '.'));
-                    const resultado = valor*porcentagem;
-                    display.textContent = resultado.toString().replace('.', ',');
-                    expressaoCalculadora = resultado.toString();
-                }
-            } catch (error) {
-                display.textContent = 'Erro';
-                expressaoCalculadora = '';
-            }
-        }
+  if (valor === 'Backspace') {
+    expressaoCalculadora = expressaoCalculadora.slice(0, -1);
+    display.textContent = expressaoCalculadora || '0';
+    return;
+  }
 
+  if (valor === '=') {
+    calcularResultado();
+    return;
+  }
+
+  if (display.textContent === '0' && valor !== '.') {
+    expressaoCalculadora = valor;
+  } else {
+    expressaoCalculadora += valor;
+  }
+
+  display.textContent = expressaoCalculadora;
+}
+
+function calcularResultado() {
+  const display = document.getElementById('calculadoraDisplay');
+
+  try {
+    let expr = expressaoCalculadora
+      .replace(/,/g, '.')
+      .replace(/x/g, '*');
+
+    // Tratamento correto de porcentagem
+    expr = expr.replace(/(\d+(\.\d+)?)\s*%\s*/g, '($1/100)');
+
+    const resultado = Function('"use strict"; return (' + expr + ')')();
+
+    const resultadoFinal = Number(resultado.toFixed(2))
+      .toString()
+      .replace('.', ',');
+
+    display.textContent = resultadoFinal;
+    expressaoCalculadora = resultadoFinal;
+
+  } catch (e) {
+    display.textContent = 'Erro';
+    expressaoCalculadora = '';
+  }
+}
+</script>
         function limparCalculadora() {
             expressaoCalculadora = '';
             document.getElementById('calculadoraDisplay').textContent = '0';
@@ -2386,6 +2386,7 @@
 </script> 
 </body>
 </html>
+
 
 
 
