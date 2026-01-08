@@ -2287,7 +2287,9 @@
             const display = document.getElementById('calculadoraDisplay');
             try {
                 // Substituir × por * para avaliação
-                let expressao = expressaoCalculadora.replace(/×/g, '*');
+                let expressao = expressaoCalculadora
+  .replace(/x/g, '*')
+  .replace(/(\d+)%/g, '($1/100)');
                 const resultado = eval(expressao);
                 display.textContent = resultado.toString().replace('.', ',');
                 expressaoCalculadora = resultado.toString();
@@ -2384,6 +2386,7 @@
 </script> 
 </body>
 </html>
+
 
 
 
