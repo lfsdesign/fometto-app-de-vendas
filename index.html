@@ -2288,30 +2288,23 @@ function adicionarCalculadora(valor) {
 
   display.textContent = expressaoCalculadora;
 }
-
 function calcularResultado() {
   const display = document.getElementById('calculadoraDisplay');
+  let expr = display.textContent.replace(',', '.');
+
+  // Trata porcentagem como calculadora comercial
+  expr = expr.replace(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*%/g, function(_, a, _, b) {
+    return (parseFloat(a) * parseFloat(b) / 100).toString();
+  });
+
+  // Converte multiplicação visual
+  expr = expr.replace(/x/g, '*');
 
   try {
-    let expr = expressaoCalculadora
-      .replace(/,/g, '.')
-      .replace(/x/g, '*');
-
-    // Tratamento correto de porcentagem
-    expr = expr.replace(/(\d+)\s*x\s*(\d+)\s*%/g, '($1*$2/100)');
-
     const resultado = Function('"use strict"; return (' + expr + ')')();
-
-    const resultadoFinal = Number(resultado.toFixed(2))
-      .toString()
-      .replace('.', ',');
-
-    display.textContent = resultadoFinal;
-    expressaoCalculadora = resultadoFinal;
-
+    display.textContent = resultado.toString().replace('.', ',');
   } catch (e) {
     display.textContent = 'Erro';
-    expressaoCalculadora = '';
   }
 }
 </script>
@@ -2386,6 +2379,7 @@ function calcularResultado() {
 </script> 
 </body>
 </html>
+
 
 
 
