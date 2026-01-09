@@ -2290,31 +2290,25 @@ function adicionarCalculadora(valor) {
 }
 
    function calcularResultado() {
-  const display = document.getElementById('calculadoraDisplay');
-
   try {
-    let expr = expressaoCalculadora;
+    let expr = expressaoCalculadora
+      .replace(/,/g, '.')
+      .replace(/x/g, '*');
 
     // Trata porcentagem corretamente
-    if (expr.includes('%')) {
-      expr = expr.replace(
-        /(\d+(?:[.,]\d+)?)%/g,
-        (_, num) => `(${num.replace(',', '.')} / 100)`
-      );
-    }
-
-    // Troca x por *
-    expr = expr.replace(/x/g, '*');
+    expr = expr.replace(/(\d+(\.\d+)?)\s*%\s*/g, '($1/100)');
 
     const resultado = Function('"use strict"; return (' + expr + ')')();
 
-    display.textContent = resultado.toString().replace('.', ',');
+    document.getElementById('calculadoraDisplay').textContent =
+      resultado.toString().replace('.', ',');
+
     expressaoCalculadora = resultado.toString();
   } catch (e) {
-    display.textContent = 'Erro';
+    document.getElementById('calculadoraDisplay').textContent = 'Erro';
     expressaoCalculadora = '';
   }
-}     
+}
 </script>
         function limparCalculadora() {
             expressaoCalculadora = '';
@@ -2387,6 +2381,7 @@ function adicionarCalculadora(valor) {
 </script> 
 </body>
 </html>
+
 
 
 
