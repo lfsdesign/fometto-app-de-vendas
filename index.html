@@ -2298,7 +2298,7 @@ function calcularResultado() {
       .replace(/x/g, '*');
 
     // Tratamento correto de porcentagem
-    expr = expr.replace(/(\d+(\.\d+)?)\s*%\s*/g, '($1/100)');
+    expr = expr.replace(/(\d+)\s*x\s*(\d+)\s*%/g, '($1*$2/100)');
 
     const resultado = Function('"use strict"; return (' + expr + ')')();
 
@@ -2386,6 +2386,7 @@ function calcularResultado() {
 </script> 
 </body>
 </html>
+
 
 
 
