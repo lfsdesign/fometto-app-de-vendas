@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+|<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <base href="./">
@@ -2289,6 +2289,7 @@ function adicionarCalculadora(valor) {
   display.textContent = expressaoCalculadora;
 }
 function calcularResultado() {
+    console.log("DISPLAY:",display.textContent);
   const display = document.getElementById('calculadoraDisplay');
   let expr = display.textContent.replace(',', '.');
 
@@ -2379,6 +2380,7 @@ function calcularResultado() {
 </script> 
 </body>
 </html>
+
 
 
 
