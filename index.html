@@ -2232,7 +2232,7 @@
                 diaDiv.textContent = dia;
                 
                 // Destacar dia atual
-                if (dia === hoje.getDate() && calendarioMes === hoje.getMonth() && calendarioAno === hoje.getFullYear()) {
+                if (dia === hoje.getDate() && calendarioMes === hoje.getMonth() && calendarioAno === hoje.getFullYear()) 
                     diaDiv.classList.add('today');
                 }
                 
@@ -2288,26 +2288,33 @@ function adicionarCalculadora(valor) {
 
   display.textContent = expressaoCalculadora;
 }
-function calcularResultado() {
-    console.log("DISPLAY:",display.textContent);
+
+   function calcularResultado() {
   const display = document.getElementById('calculadoraDisplay');
-  let expr = display.textContent.replace(',', '.');
-
-  // Trata porcentagem como calculadora comercial
-  expr = expr.replace(/(\d+(\.\d+)?)\s*x\s*(\d+(\.\d+)?)\s*%/g, function(_, a, _, b) {
-    return (parseFloat(a) * parseFloat(b) / 100).toString();
-  });
-
-  // Converte multiplicação visual
-  expr = expr.replace(/x/g, '*');
 
   try {
+    let expr = expressaoCalculadora;
+
+    // Trata porcentagem corretamente
+    if (expr.includes('%')) {
+      expr = expr.replace(
+        /(\d+(?:[.,]\d+)?)%/g,
+        (_, num) => `(${num.replace(',', '.')} / 100)`
+      );
+    }
+
+    // Troca x por *
+    expr = expr.replace(/x/g, '*');
+
     const resultado = Function('"use strict"; return (' + expr + ')')();
+
     display.textContent = resultado.toString().replace('.', ',');
+    expressaoCalculadora = resultado.toString();
   } catch (e) {
     display.textContent = 'Erro';
+    expressaoCalculadora = '';
   }
-}
+}     
 </script>
         function limparCalculadora() {
             expressaoCalculadora = '';
@@ -2380,6 +2387,7 @@ function calcularResultado() {
 </script> 
 </body>
 </html>
+
 
 
 
