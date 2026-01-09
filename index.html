@@ -1,4 +1,4 @@
-|<!DOCTYPE html>
+~|<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <base href="./">
@@ -2263,47 +2263,50 @@
             const feriado = ehFeriado(dia, calendarioMes, calendarioAno) ? ' (Feriado Nacional)' : '';
             alert(`Você selecionou o dia ${dia}/${calendarioMes + 1}/${calendarioAno}${feriado}`);
             }
+<!-- Script completo da calculadora -->
 <script>
-let expressaoCalculadora = '';
+/* ===== VARIÁVEL GLOBAL ===== */
+let expressaoCalculadora = "";
 
+/* ===== FUNÇÃO PARA LIMPAR CALCULADORA ===== */
+function limparCalculadora() {
+  expressaoCalculadora = '';
+  document.getElementById('calculadoraDisplay').textContent = '0';
+}
+
+/* ===== FUNÇÃO PARA ADICIONAR VALORES ===== */
 function adicionarCalculadora(valor) {
   const display = document.getElementById('calculadoraDisplay');
 
   if (valor === 'Backspace') {
     expressaoCalculadora = expressaoCalculadora.slice(0, -1);
     display.textContent = expressaoCalculadora || '0';
-    return;
-  }
-
-  if (valor === '=') {
+  } else if (valor === '=') {
     calcularResultado();
-    return;
-  }
-
-  if (display.textContent === '0' && valor !== '.') {
-    expressaoCalculadora = valor;
   } else {
     expressaoCalculadora += valor;
+    display.textContent = expressaoCalculadora;
   }
-
-  display.textContent = expressaoCalculadora;
 }
-<script>
-   function calcularResultado() {
-       console.log("EXPRESSÃO REAL:", expressaoCalculadora);
+
+/* ===== FUNÇÃO PARA CALCULAR RESULTADO ===== */
+function calcularResultado() {
   try {
-    let expr = expressaoCalculadora
-      .replace(/,/g, '.')
-      .replace(/x/g, '*');
+    let expr = expressaoCalculadora;
 
-    // Trata porcentagem corretamente
-    expr = expr.replace(/(\d+(\.\d+)?)\s*%\s*/g, '($1/100)');
+    // Substituições
+    expr = expr.replace(/,/g, '.');       // vírgula para ponto
+    expr = expr.replace(/x/g, '*');       // x para *
+    expr = expr.replace(/(\d+(\.\d+)?)%/g, '($1/100)'); // porcentagem
 
-    const resultado = Function('"use strict"; return (' + expr + ')')();
+    // Avaliar expressão
+    const resultado = new Function(`return ${expr}`)();
 
+    // Atualiza display
     document.getElementById('calculadoraDisplay').textContent =
       resultado.toString().replace('.', ',');
 
+    // Atualiza expressão
     expressaoCalculadora = resultado.toString();
   } catch (e) {
     document.getElementById('calculadoraDisplay').textContent = 'Erro';
@@ -2311,11 +2314,7 @@ function adicionarCalculadora(valor) {
   }
 }
 </script>
-    
-        function limparCalculadora() {
-            expressaoCalculadora = '';
-            document.getElementById('calculadoraDisplay').textContent = '0';
-        }
+
 
         // Bloco de Notas
         function carregarNotas() {
@@ -2383,6 +2382,7 @@ function adicionarCalculadora(valor) {
 </script> 
 </body>
 </html>
+
 
 
 
